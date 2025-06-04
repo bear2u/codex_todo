@@ -153,7 +153,37 @@ class StatsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Stats Page');
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Text(
+            'Statistics',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.check),
+              title: const Text('Completed Todos'),
+              trailing: const Text('12'),
+            ),
+          ),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.pending_actions),
+              title: const Text('Pending Todos'),
+              trailing: const Text('3'),
+            ),
+          ),
+          const SizedBox(height: 24),
+          const Text('Completion Rate'),
+          const SizedBox(height: 8),
+          const LinearProgressIndicator(value: 0.8),
+        ],
+      ),
+    );
   }
 }
 
