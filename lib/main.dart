@@ -83,12 +83,68 @@ class DashboardPage extends StatelessWidget {
   }
 }
 
-class TodoPage extends StatelessWidget {
+class TodoPage extends StatefulWidget {
   const TodoPage({super.key});
 
   @override
+  State<TodoPage> createState() => _TodoPageState();
+}
+
+class _TodoPageState extends State<TodoPage> {
+  final TextEditingController _controller = TextEditingController();
+  final List<String> _todos = [];
+
+  void _addTodo() {
+    final text = _controller.text.trim();
+    if (text.isNotEmpty) {
+      setState(() {
+        _todos.add(text);
+        _controller.clear();
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const Text('Add Todo Page');
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _controller,
+                  decoration: const InputDecoration(
+                    labelText: 'Add a todo',
+                  ),
+                  onSubmitted: (_) => _addTodo(),
+                ),
+              ),
+              const SizedBox(width: 8),
+              ElevatedButton(
+                onPressed: _addTodo,
+                child: const Text('Add'),
+              )
+            ],
+          ),
+          const SizedBox(height: 16),
+          Expanded(
+            child: _todos.isEmpty
+                ? const Center(child: Text('No todos yet'))
+                : ListView.builder(
+                    itemCount: _todos.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        leading: const Icon(Icons.check_box_outline_blank),
+                        title: Text(_todos[index]),
+                      );
+                    },
+                  ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
