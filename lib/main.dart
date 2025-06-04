@@ -104,6 +104,45 @@ class _TodoPageState extends State<TodoPage> {
     }
   }
 
+  void _editTodo(int index) async {
+    final editController = TextEditingController(text: _todos[index]);
+    final result = await showDialog<String>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Edit Todo'),
+          content: TextField(
+            controller: editController,
+            autofocus: true,
+            decoration: const InputDecoration(labelText: 'Todo'),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () =>
+                  Navigator.pop(context, editController.text.trim()),
+              child: const Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+    if (result != null && result.isNotEmpty) {
+      setState(() {
+        _todos[index] = result;
+      });
+    }
+  }
+
+  void _deleteTodo(int index) {
+    setState(() {
+      _todos.removeAt(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -138,6 +177,19 @@ class _TodoPageState extends State<TodoPage> {
                       return ListTile(
                         leading: const Icon(Icons.check_box_outline_blank),
                         title: Text(_todos[index]),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.edit),
+                              onPressed: () => _editTodo(index),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.delete),
+                              onPressed: () => _deleteTodo(index),
+                            ),
+                          ],
+                        ),
                       );
                     },
                   ),
