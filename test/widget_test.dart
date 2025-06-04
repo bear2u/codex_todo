@@ -21,5 +21,11 @@ void main() {
 
     // Verify the added item appears
     expect(find.text('Buy milk'), findsOneWidget);
+
+    // Navigate to My Page and verify profile info
+    await tester.tap(find.text('My Page'));
+    await tester.pumpAndSettle();
+    expect(find.text('John Doe'), findsOneWidget);
+    expect(find.text('Dark Mode'), findsOneWidget);
   });
 }
