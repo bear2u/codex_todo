@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
     DashboardPage(),
     TodoPage(),
     StatsPage(),
-    SettingsPage(),
+    ProfileSettingsPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Settings',
+            label: 'My Page',
           ),
         ],
       ),
@@ -239,11 +239,53 @@ class StatsPage extends StatelessWidget {
   }
 }
 
-class SettingsPage extends StatelessWidget {
-  const SettingsPage({super.key});
+class ProfileSettingsPage extends StatefulWidget {
+  const ProfileSettingsPage({super.key});
+
+  @override
+  State<ProfileSettingsPage> createState() => _ProfileSettingsPageState();
+}
+
+class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
+  bool _darkMode = false;
+  bool _notifications = true;
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Settings Page');
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        const CircleAvatar(
+          radius: 40,
+          child: Icon(Icons.person, size: 40),
+        ),
+        const SizedBox(height: 16),
+        const Text(
+          'John Doe',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 8),
+        const Text(
+          'john.doe@example.com',
+          textAlign: TextAlign.center,
+        ),
+        const Divider(height: 32),
+        SwitchListTile(
+          title: const Text('Dark Mode'),
+          value: _darkMode,
+          onChanged: (val) {
+            setState(() => _darkMode = val);
+          },
+        ),
+        SwitchListTile(
+          title: const Text('Notifications'),
+          value: _notifications,
+          onChanged: (val) {
+            setState(() => _notifications = val);
+          },
+        ),
+      ],
+    );
   }
 }
